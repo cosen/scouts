@@ -24,6 +24,12 @@ public class JogoRepositorio {
 	public void remove(Long id) {
 		Jogo jogo = this.manager.find(Jogo.class, id);
 
+		this.removeGolsAssistencias(jogo);
+
+		this.manager.remove(jogo);
+	}
+
+	private void removeGolsAssistencias(Jogo jogo) {
 		for (Gol gol : jogo.getGols()) {
 			if (gol.getJogador() != null) {
 				gol.getJogador().getGols().remove(gol);
@@ -52,8 +58,6 @@ public class JogoRepositorio {
 			this.manager.remove(assistencia);
 		}
 		jogo.getAssistencias().clear();
-
-		this.manager.remove(jogo);
 	}
 
 	public Jogo buscaPorId(Long id) {
@@ -81,7 +85,7 @@ public class JogoRepositorio {
 		return jogos;
 	}
 
-	public void salva(Long id1, Long id2) {
+	public Jogo salva(Long id1, Long id2) {
 		Time time1 = this.manager.find(Time.class, id1);
 		Time time2 = this.manager.find(Time.class, id2);
 
@@ -91,12 +95,15 @@ public class JogoRepositorio {
 		jogo.setData(Calendar.getInstance());
 
 		this.manager.persist(jogo);
+		
+		return jogo;
 	}
 
 	public void salva(List<Long> jogadoresGol, List<Long> jogadoresAssistencia,
 			Long jogoID) {
 		Jogo jogo = this.manager.find(Jogo.class, jogoID);
-
+		this.removeGolsAssistencias(jogo);
+		
 		for (Long id : jogadoresGol) {
 			Jogador jogador = this.manager.find(Jogador.class, id);
 			Gol gol = new Gol();

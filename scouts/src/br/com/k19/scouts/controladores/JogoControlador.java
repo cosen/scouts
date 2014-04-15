@@ -9,6 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.k19.scouts.entidades.Assistencia;
+import br.com.k19.scouts.entidades.Gol;
+import br.com.k19.scouts.entidades.Jogador;
 import br.com.k19.scouts.entidades.Jogo;
 import br.com.k19.scouts.repositorios.JogoRepositorio;
 
@@ -22,34 +25,25 @@ public class JogoControlador {
 	private List<Jogo> jogos;
 
 	private Jogo jogo;
-	
-	private List<String> gols;
-	
-	private List<String> assistencias;
-	
+
+	private String[] gols;
+
+	private String[] assistencias;
+
+	private List<Jogador> jogadores;
+
 	private Long time1;
-	
+
 	private Long time2;
-	
-	public String preparaRemove(){
-		Map<String, String> params = FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap();
-		Long id = Long.parseLong(params.get("id"));
-		this.jogo = this.jogoRepositorio.buscaPorId(id);
-		return "pm:preparaRemoveJogo";
-	}
-	
-	public String remove(){
-		Map<String, String> params = FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap();
-		Long id = Long.parseLong(params.get("id"));
-		this.jogoRepositorio.remove(id);
+
+	public String remove() {
+		this.jogoRepositorio.remove(this.jogo.getId());
 		this.jogo = null;
 		this.jogos = null;
 		return "pm:listaDeJogos";
 	}
-	
-	public String novoJogo(){
+
+	public String novoJogo() {
 		this.jogoRepositorio.salva(this.time1, this.time2);
 		this.jogos = null;
 		this.time1 = null;
@@ -61,7 +55,33 @@ public class JogoControlador {
 		Map<String, String> params = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap();
 		Long id = Long.parseLong(params.get("id"));
+
 		this.jogo = this.jogoRepositorio.buscaPorId(id);
+
+		this.gols = new String[3];
+		for (int i = 0; i < this.jogo.getGols().size(); i++) {
+			Gol gol = this.jogo.getGols().get(i);
+			if (gol.getJogador() != null) {
+				this.gols[i] = "" + gol.getJogador().getId();
+			} else {
+				if (gol.getTime().equals(this.jogo.getTime1())) {
+					this.gols[i] = "-1";
+				} else {
+					this.gols[i] = "-2";
+				}
+			}
+		}
+
+		this.assistencias = new String[3];
+		for (int i = 0; i < this.jogo.getAssistencias().size(); i++) {
+			Assistencia assistencia = this.jogo.getAssistencias().get(i);
+			this.assistencias[i] = "" + assistencia.getJogador().getId();
+		}
+
+		this.jogadores = new ArrayList<Jogador>();
+		this.jogadores.addAll(this.jogo.getTime1().getJogadores());
+		this.jogadores.addAll(this.jogo.getTime2().getJogadores());
+
 		this.jogos = null;
 		return "pm:jogoDetalhes";
 	}
@@ -69,27 +89,33 @@ public class JogoControlador {
 	public String salva() {
 		List<Long> jogadoresGol = new ArrayList<Long>();
 		List<Long> jogadoresAssistencia = new ArrayList<Long>();
-		
+
 		for (String s : this.gols) {
-			jogadoresGol.add(Long.parseLong(s));
+			if (s != null) {
+				jogadoresGol.add(Long.parseLong(s));
+			}
 		}
-		
+
 		for (String s : this.assistencias) {
-			jogadoresAssistencia.add(Long.parseLong(s));
+			if (s != null) {
+				jogadoresAssistencia.add(Long.parseLong(s));
+			}
 		}
-		
-		this.jogoRepositorio.salva(jogadoresGol, jogadoresAssistencia, this.jogo.getId());
+
+		this.jogoRepositorio.salva(jogadoresGol, jogadoresAssistencia,
+				this.jogo.getId());
+		this.jogo = null;
 		this.jogos = null;
-		this.gols.clear();
-		this.assistencias.clear();
-		
+		this.gols = null;
+		this.assistencias = null;
+
 		return "pm:listaDeJogos";
 	}
-	
+
 	public void setJogos(List<Jogo> jogos) {
 		this.jogos = jogos;
 	}
-	
+
 	public List<Jogo> getJogos() {
 		if (this.jogos == null) {
 			this.jogos = this.jogoRepositorio.buscaJogos();
@@ -103,22 +129,6 @@ public class JogoControlador {
 
 	public void setJogo(Jogo jogo) {
 		this.jogo = jogo;
-	}
-
-	public List<String> getGols() {
-		return gols;
-	}
-
-	public void setGols(List<String> gols) {
-		this.gols = gols;
-	}
-
-	public List<String> getAssistencias() {
-		return assistencias;
-	}
-
-	public void setAssistencias(List<String> assistencias) {
-		this.assistencias = assistencias;
 	}
 
 	public Long getTime1() {
@@ -135,5 +145,29 @@ public class JogoControlador {
 
 	public void setTime2(Long time2) {
 		this.time2 = time2;
+	}
+
+	public List<Jogador> getJogadores() {
+		return jogadores;
+	}
+
+	public void setJogadores(List<Jogador> jogadores) {
+		this.jogadores = jogadores;
+	}
+
+	public String[] getGols() {
+		return gols;
+	}
+
+	public void setGols(String[] gols) {
+		this.gols = gols;
+	}
+
+	public String[] getAssistencias() {
+		return assistencias;
+	}
+
+	public void setAssistencias(String[] assistencias) {
+		this.assistencias = assistencias;
 	}
 }

@@ -16,10 +16,10 @@
 
 			<pm:content>
 				<p:commandButton value="Novo Jogo" action="pm:novoJogo" />
-				<p:commandButton value="Lista de Jogos" action="pm:listaDeJogos" />
+				<p:commandButton value="Jogos" action="pm:listaDeJogos" />
 				<p:commandButton value="Classificação" action="pm:classificacao" />
-				<p:commandButton value="Lista de Times" action="pm:listaDeTimes" />
-				<p:commandButton value="Sortear Times" action="pm:sortearTimes" />
+				<p:commandButton value="Times" action="pm:listaDeTimes" />
+				<p:commandButton value="Sorteio" action="pm:sortearTimes" />
 				<p:commandButton value="Novo Jogador" action="pm:novoJogador" />
 			</pm:content>
 		</pm:view>
@@ -73,7 +73,7 @@
 
 			<pm:content>
 				<h:outputText value="Você realmente quer remover este Jogo?" />
-				<p:commandButton value="Não" action="pm:listaDeJogos"/>
+				<p:commandButton value="Não" action="pm:listaDeJogos" />
 				<p:commandButton value="SIM" action="#{jogoControlador.remove}"
 					update="@all">
 					<f:param name="id" value="#{jogoControlador.jogo.id}" />
@@ -87,88 +87,89 @@
 			<pm:header title="Jogo Detalhes">
 				<p:commandButton value="Home" action="pm:index"
 					icon="ui-icon-arrow-left" />
+				<p:commandButton value="Jogos" action="pm:listaDeJogos"
+					icon="ui-icon-arrow-left" />
 			</pm:header>
 
 			<pm:content>
 				<h:form>
-					<p:accordionPanel>
-						<p:tab title="Placar">
-							<h:outputLabel value="#{jogoControlador.jogo}" />
-							<p:dataTable value="#{jogoControlador.jogo.gols}" var="gol"
-								rendered="#{not empty jogoControlador.jogo.gols}">
-								<f:facet name="header">
-									<h:outputText value="Gols" />
-								</f:facet>
+					<h4>PLACAR</h4>
 
-								<p:column headerText="Jogador">
-									<h:outputText value="#{gol.jogador.nome}" />
-								</p:column>
-
-								<p:column headerText="Time">
-									<h:outputText value="#{gol.time.sigla}" />
-								</p:column>
-							</p:dataTable>
-
-							<p:dataTable value="#{jogoControlador.jogo.assistencias}"
-								var="assistencia"
-								rendered="#{not empty jogoControlador.jogo.assistencias}">
-								<f:facet name="header">
-									<h:outputText value="Assistências" />
-								</f:facet>
-
-								<p:column headerText="Jogador">
-									<h:outputText value="#{assistencia.jogador.nome}" />
-								</p:column>
-
-								<p:column headerText="Time">
-									<h:outputText value="#{assistencia.time.sigla}" />
-								</p:column>
-							</p:dataTable>
-						</p:tab>
-						<p:tab title="Editar">
-							<pm:field>
-								<p:outputLabel value="Adicionar Gols:" />
-								<p:selectManyCheckbox value="#{jogoControlador.gols}">
-									<f:selectItems value="#{jogoControlador.jogo.time1.jogadores}"
-										var="jogador"
-										itemLabel="#{jogoControlador.jogo.time1.sigla} - #{jogador.nome}"
-										itemValue="#{jogador.id}" />
-									<f:selectItems value="#{jogoControlador.jogo.time2.jogadores}"
-										var="jogador"
-										itemLabel="#{jogoControlador.jogo.time2.sigla} - #{jogador.nome}"
-										itemValue="#{jogador.id}" />
-									<f:selectItem itemLabel="#{jogoControlador.jogo.time1.sigla}"
-										itemValue="-1" />
-									<f:selectItem itemLabel="#{jogoControlador.jogo.time2.sigla}"
-										itemValue="-2" />
-								</p:selectManyCheckbox>
-							</pm:field>
-							<pm:field>
-								<p:outputLabel value="Adicionar Assistências:" />
-								<p:selectManyCheckbox value="#{jogoControlador.assistencias}">
-									<f:selectItems value="#{jogoControlador.jogo.time1.jogadores}"
-										var="jogador"
-										itemLabel="#{jogoControlador.jogo.time1.sigla} - #{jogador.nome}"
-										itemValue="#{jogador.id}" />
-									<f:selectItems value="#{jogoControlador.jogo.time2.jogadores}"
-										var="jogador"
-										itemLabel="#{jogoControlador.jogo.time2.sigla} - #{jogador.nome}"
-										itemValue="#{jogador.id}" />
-								</p:selectManyCheckbox>
-							</pm:field>
-
-						</p:tab>
-					</p:accordionPanel>
+					<h:outputLabel value="#{jogoControlador.jogo}" />
 
 					<p:commandButton value="Salvar" action="#{jogoControlador.salva}"
 						update="@all">
 						<f:param name="id" value="#{jogoControlador.jogo.id}" />
 					</p:commandButton>
 
-					<p:commandButton value="Remover"
-						action="#{jogoControlador.preparaRemove}" update="@all">
-						<f:param name="id" value="#{jogoControlador.jogo.id}" />
+					<p:commandButton value="Remover" action="pm:preparaRemoveJogo">
 					</p:commandButton>
+
+					<h4>GOLS</h4>
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.gols[0]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time1.sigla}"
+								itemValue="-1" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time2.sigla}"
+								itemValue="-2" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.gols[1]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time1.sigla}"
+								itemValue="-1" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time2.sigla}"
+								itemValue="-2" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.gols[2]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time1.sigla}"
+								itemValue="-1" />
+							<f:selectItem itemLabel="#{jogoControlador.jogo.time2.sigla}"
+								itemValue="-2" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<h4>ASSISTÊNCIAS</h4>
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.assistencias[0]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.assistencias[1]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<pm:field>
+						<h:selectOneMenu value="#{jogoControlador.assistencias[2]}">
+							<f:selectItem noSelectionOption="true" itemLabel="" />
+							<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
+								itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+						</h:selectOneMenu>
+					</pm:field>
+
+					<h2></h2>
+
+
 				</h:form>
 			</pm:content>
 		</pm:view>
@@ -250,8 +251,10 @@
 
 		<!-- Lista de Jogos -->
 		<pm:view swatch="b" id="listaDeJogos">
-			<pm:header title="Lista de Jogos">
+			<pm:header title="Jogos">
 				<p:commandButton value="Home" action="pm:index"
+					icon="ui-icon-arrow-left" />
+				<p:commandButton value="Novo Jogo" action="pm:novoJogo"
 					icon="ui-icon-arrow-left" />
 			</pm:header>
 
