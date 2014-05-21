@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Sortear Times -->
+	<pm:page title="Scouts" swatch="a" id="sortearTimes">
+		<pm:header title="Sortear Times" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<p:selectManyCheckbox id="pageDirection"
+					value="#{scoutsControlador.selecionados}" layout="pageDirection">
+					<f:selectItems value="#{jogadorControlador.jogadores}"
+						var="jogador" itemLabel="#{jogador.nome}"
+						itemValue="#{jogador.id}" />
+				</p:selectManyCheckbox>
+				<p:commandButton action="#{scoutsControlador.sorteia}"
+					value="Sorteia" />
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

@@ -96,6 +96,16 @@ public class JogoRepositorio {
 
 		this.manager.persist(jogo);
 		
+		// multiple bag fuck
+		jogo.getTime1().getJogadores().size();
+		jogo.getTime2().getJogadores().size();
+		jogo.getTime1().getGols().size();
+		jogo.getTime2().getGols().size();
+		jogo.getTime1().getAssistencias().size();
+		jogo.getTime2().getAssistencias().size();
+		jogo.getGols().size();
+		jogo.getAssistencias().size();
+		
 		return jogo;
 	}
 

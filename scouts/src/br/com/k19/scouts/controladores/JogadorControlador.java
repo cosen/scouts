@@ -26,9 +26,10 @@ public class JogadorControlador {
 		this.jogador = jogador;
 	}
 	
-	public void salva(){
+	public String salva(){
 		this.jogadorRepositorio.salva(this.jogador);
 		this.jogador = new Jogador();
+		return "/index";
 	}
 	
 	public List<Jogador> getJogadores() {

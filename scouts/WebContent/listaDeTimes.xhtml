@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Lista de Times -->
+	<pm:page title="Scouts" swatch="a" id="listaDeTimes">
+		<pm:header title="Lista de Times" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<p:dataList value="#{timeControlador.times}" var="time">
+					<p:commandLink value="#{time}" action="#{timeControlador.detalhes}">
+						<f:param name="id" value="#{time.id}" />
+					</p:commandLink>
+				</p:dataList>
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

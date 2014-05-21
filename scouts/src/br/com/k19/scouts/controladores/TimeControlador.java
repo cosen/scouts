@@ -1,5 +1,6 @@
 package br.com.k19.scouts.controladores;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public class TimeControlador {
 	private TimeRepositorio timeRepositorio;
 	
 	private List<Time> times;
+	
+	private List<Time> timesRecentes;
 
 	private Time time;
 	
@@ -27,7 +30,7 @@ public class TimeControlador {
 		
 		this.time = this.timeRepositorio.buscaPorId(id);
 		
-		return "pm:timeDetalhes";
+		return "/timeDetalhes";
 	}
 	
 	public List<Time> getTimes() {
@@ -36,6 +39,18 @@ public class TimeControlador {
 		}
 		return this.times;
 	}
+	
+	public List<Time> getTimesRecentes() {
+		if(this.timesRecentes == null) {
+			Calendar inicio = Calendar.getInstance();
+			inicio.add(Calendar.DAY_OF_MONTH, -6);
+			Calendar fim = Calendar.getInstance();
+			
+			this.timesRecentes = this.timeRepositorio.buscaTimesPorData(inicio, fim);
+		}
+		return this.timesRecentes;
+	}
+	
 
 	public Time getTime() {
 		return time;

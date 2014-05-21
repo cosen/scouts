@@ -1,14 +1,24 @@
 package br.com.k19.scouts.servicos;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import br.com.k19.scouts.entidades.Assistencia;
 import br.com.k19.scouts.entidades.Gol;
@@ -23,9 +33,6 @@ import br.com.k19.scouts.repositorios.TimeRepositorio;
 @Stateless
 public class ScoutsServico {
 
-	private static int[] divisores = new int[] { 5, 5, 5, 5, 5, 3, 4, 4, 5, 5,
-			4, 4, 5, 5, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
-
 	@EJB
 	private JogadorRepositorio jogadorRepositorio;
 
@@ -34,7 +41,7 @@ public class ScoutsServico {
 
 	@EJB
 	private JogoRepositorio jogoRepositorio;
-
+	
 	public List<Pontuacao> geraClassificacao(Calendar inicio, Calendar fim) {
 		Map<Jogador, Pontuacao> mapa = new HashMap<Jogador, Pontuacao>();
 		List<Jogador> jogadores = this.jogadorRepositorio.buscaJogadores();
@@ -110,14 +117,12 @@ public class ScoutsServico {
 	public List<Time> sorteia(List<Long> ids) {
 		int offset = this.timeRepositorio.contaTimesCriadosHoje();
 
-		int n = ids.size();
-		int d = this.calculaDivisor(n);
-		int r = n % d;
-		int t = n / d + (r == 0 ? 0 : 1);
+		int numeroDeJogadores = ids.size();
+		int numeroDeTimes = this.calculaQuantidadeDeTimes(numeroDeJogadores);
 
 		// criando os times
 		List<Time> times = new ArrayList<Time>();
-		for (int i = 0; i < t; i++) {
+		for (int i = 0; i < numeroDeTimes; i++) {
 			Time time = new Time();
 			char letra = (char) ('A' + i + offset);
 			time.setSigla("" + letra);
@@ -125,6 +130,7 @@ public class ScoutsServico {
 			times.add(time);
 		}
 
+		// pontuação dos jogadores que estarão no sorteio
 		Calendar inicio = Calendar.getInstance();
 		inicio.add(Calendar.MONTH, -3);
 
@@ -137,22 +143,15 @@ public class ScoutsServico {
 				Jogador jogador = pontuacao.getJogador();
 				jogadores.add(jogador);
 
-				if (pontuacao.getJogos() < 40) {
-					double ns = (jogador.getNota() * jogador.getNotaPeso() + pontuacao
-							.getPontos())
-							/ (jogador.getNotaPeso() + pontuacao.getJogos());
-					jogador.setNotaSorteio(ns);
-				} else {
-					Double notaSorteio = pontuacao.getPontos()
-							/ pontuacao.getJogos();
-					jogador.setNotaSorteio(notaSorteio);
-				}
+				jogador.setNotaSorteio(pontuacao.getNotaSorteio());	
 			}
 		}
 
 		Collections.sort(jogadores);
 		Collections.reverse(jogadores);
 
+		
+		// criando os potes
 		List<List<Jogador>> potes = new ArrayList<List<Jogador>>();
 		for (int i = 0; i < 5; i++) {
 			potes.add(new ArrayList<Jogador>());
@@ -163,13 +162,13 @@ public class ScoutsServico {
 		for (int i = 0; i < jogadores.size(); i++) {
 			potes.get(contador).add(jogadores.get(i));
 
-			if (potes.get(contador).size() == t) {
+			if (potes.get(contador).size() == numeroDeTimes) {
 				contador++;
 			}
 		}
 
 		// espalhando os jogadores
-		for (int i = 0; i < t; i++) {
+		for (int i = 0; i < numeroDeTimes; i++) {
 			for (int j = 0; j < 5; j++) {
 				if (potes.get(j).size() == 0) {
 					break;
@@ -187,12 +186,85 @@ public class ScoutsServico {
 
 		return times;
 	}
-
-	private int calculaDivisor(int n) {
-		if (n <= divisores.length) {
-			return divisores[n - 1];
-		} else {
-			return 5;
+	
+	public void enviaEmailClassificacao(){
+		final String username = "futsal.de.terca@gmail.com";
+		final String password = "carameloazul";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+ 
+		try {
+ 
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("futsal.de.terca@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse("futsal-de-terca@googlegroups.com"));
+				//InternetAddress.parse("rcosen@gmail.com"));
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			message.setSubject("Classificação " + sdf.format(date));
+			
+			
+			Calendar inicio = Calendar.getInstance();
+			inicio.set(Calendar.DAY_OF_MONTH, 1);
+			
+			Calendar fim = Calendar.getInstance();
+			List<Pontuacao> classificacao = this.geraClassificacao(inicio, fim);
+			
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("<html>");
+			sb.append("<table>");
+			sb.append("<tr>");
+			sb.append("<th>Jogador</th>");
+			sb.append("<th>Pontos</th>");
+			sb.append("<th>Jogos</th>");
+			sb.append("<th>Vitórias</th>");
+			sb.append("<th>Empates</th>");
+			sb.append("<th>Derrotas</th>");
+			sb.append("<th>Gols</th>");
+			sb.append("<th>Assistências</th>");
+			sb.append("</tr>");
+			
+			boolean cor = true;
+			for (Pontuacao pontuacao : classificacao) {
+				sb.append("<tr style='background-color: "+ (cor ? "#CCCCCC" : "#FFFFFF" )+"'>");
+				sb.append("<td>" + pontuacao.getJogador().getNome() + "</td>");
+				sb.append("<td>" + pontuacao.getPontos() + "</td>");
+				sb.append("<td>" + pontuacao.getJogos() + "</td>");
+				sb.append("<td>" + pontuacao.getVitorias() + "</td>");
+				sb.append("<td>" + pontuacao.getEmpates() + "</td>");
+				sb.append("<td>" + pontuacao.getDerrotas() + "</td>");
+				sb.append("<td>" + pontuacao.getGols() + "</td>");
+				sb.append("<td>" + pontuacao.getAssistencias() + "</td>");
+				sb.append("</tr>");
+				
+				cor = !cor;
+			}
+			sb.append("</table>");
+			sb.append("</html>");
+			
+			message.setContent(sb.toString(), "text/html; charset=utf-8");
+ 
+			Transport.send(message);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
 		}
+	}
+	
+
+	private int calculaQuantidadeDeTimes(int n) {
+		return (int) Math.ceil(n / 5.0);
 	}
 }

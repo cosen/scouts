@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Times Sorteados -->
+	<pm:page title="Scouts" swatch="a" id="timesSorteados">
+		<pm:header title="Times Sorteados" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<ui:repeat value="#{scoutsControlador.times}" var="time">
+						#{time.sigla}
+					</ui:repeat>
+
+				<p:dataList value="#{scoutsControlador.times}" var="time"
+					style="overflow: hidden">
+					<h:outputText value="#{time.sigla}" />
+					<p:dataList value="#{time.jogadores}" var="jogador"
+						style="padding-top: 35px">
+						<h:outputText value="#{jogador.nome}" style="padding-left: 35px" />
+					</p:dataList>
+				</p:dataList>
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

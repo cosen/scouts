@@ -1,12 +1,10 @@
 package br.com.k19.scouts.controladores;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
 import br.com.k19.scouts.relatorios.Pontuacao;
 import br.com.k19.scouts.servicos.ScoutsServico;
@@ -14,18 +12,25 @@ import br.com.k19.scouts.servicos.ScoutsServico;
 @ManagedBean
 public class ClassificacaoControlador {
 
-	private Calendar inicio = new GregorianCalendar(1900, 0, 1);
+	private Calendar inicio;
 	
-	private Calendar fim = new GregorianCalendar(2900, 0, 1);
+	private Calendar fim;
 	
 	private List<Pontuacao> classificacao;
 	
 	@EJB
 	private ScoutsServico scoutsServico;
 	
+	public ClassificacaoControlador() {
+		this.inicio = Calendar.getInstance();
+		this.fim = Calendar.getInstance();
+		
+		this.inicio.set(Calendar.DAY_OF_MONTH, 1);
+	}
+	
 	public String gera(){
 		this.classificacao = this.scoutsServico.geraClassificacao(this.inicio, this.fim);
-		return "pm:classificacao";
+		return "/classificacao";
 	}
 	
 	public List<Pontuacao> getClassificacao() {

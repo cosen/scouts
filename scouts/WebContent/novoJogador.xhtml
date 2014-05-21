@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Novo Jogador -->
+	<pm:page title="Scouts" swatch="a" id="novoJogador">
+		<pm:header title="Novo Jogador" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<pm:field>
+					<p:outputLabel value="Nome:" for="jogador" style="display:none" />
+					<p:inputText id="jogador"
+						value="#{jogadorControlador.jogador.nome}" />
+				</pm:field>
+
+				<pm:field>
+					<p:outputLabel value="Nota (0-10):" for="nota" style="display:none" />
+					<p:inputText id="nota" value="#{jogadorControlador.jogador.nota}"
+						type="number" />
+				</pm:field>
+
+				<p:commandButton action="#{jogadorControlador.salva}" value="Salvar" />
+			</h:form>
+
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

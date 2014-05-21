@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+	<style>
+.impar {
+	background-color: #BBBBBB;
+}
+
+.tabela  table {
+	width: 100%;
+}
+
+.tabela  table td {
+	padding: 1%
+}
+</style>
+</h:head>
+<h:body>
+	<!-- Classificação -->
+	<pm:page title="Scouts" swatch="a" id="classificacao">
+		<pm:header title="Classificação" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<p:commandButton value="Enviar Classificacao"
+					action="#{emailControlador.enviaEmailClassificacao}" />
+
+				<p:dataTable styleClass="tabela"
+					value="#{classificacaoControlador.classificacao}"
+					rowIndexVar="index" var="pontuacao" style="overflow: auto;"
+					rowStyleClass="#{index % 2 != 0 ? 'impar' : null}">
+
+					<p:column headerText="">
+						<h:outputText value="#{index + 1}" />
+					</p:column>
+					<p:column headerText="Jogador">
+						<h:outputText value="#{pontuacao.jogador.nome}" />
+					</p:column>
+					<p:column headerText="P">
+						<h:outputText value="#{pontuacao.pontos}" />
+					</p:column>
+					<p:column headerText="J">
+						<h:outputText value="#{pontuacao.jogos}" />
+					</p:column>
+					<p:column headerText="V">
+						<h:outputText value="#{pontuacao.vitorias}" />
+					</p:column>
+					<p:column headerText="E">
+						<h:outputText value="#{pontuacao.empates}" />
+					</p:column>
+					<p:column headerText="D">
+						<h:outputText value="#{pontuacao.derrotas}" />
+					</p:column>
+					<p:column headerText="G">
+						<h:outputText value="#{pontuacao.gols}" />
+					</p:column>
+					<p:column headerText="A">
+						<h:outputText value="#{pontuacao.assistencias}" />
+					</p:column>
+					<p:column headerText="NS">
+						<h:outputText value="#{pontuacao.jogador.notaSorteio}">
+							<f:convertNumber maxFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<pm:field>
+					<p:outputLabel value="Início: " for="inicio" />
+					<p:calendar id="inicio" pattern="dd/MM/yyyy"
+						value="#{classificacaoControlador.inicio.time}" />
+				</pm:field>
+
+				<pm:field>
+					<p:outputLabel value="Fim: " for="fim" />
+					<p:calendar id="fim" pattern="dd/MM/yyyy"
+						value="#{classificacaoControlador.fim.time}" />
+				</pm:field>
+				<p:commandButton value="Gerar" action="#{classificacaoControlador.gera}" update="@all"/>
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

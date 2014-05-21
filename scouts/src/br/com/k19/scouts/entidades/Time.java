@@ -18,7 +18,8 @@ import javax.persistence.TemporalType;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Time.buscaTime", query = "select x from Time x order by x.id desc"),
-		@NamedQuery(name = "Time.buscaPorData", query = "select x from Time x where x.data = :data")})
+		@NamedQuery(name = "Time.buscaPorData", query = "select x from Time x where x.data >= :inicio and x.data <= :fim"),
+		@NamedQuery(name = "Time.buscaTimesCriadosHoje", query = "select x from Time x where x.data = :data")})
 public class Time {
 
 	@Id

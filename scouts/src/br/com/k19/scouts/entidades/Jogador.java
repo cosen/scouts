@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = "Jogador.buscaJogador", query = "select x from Jogador x") })
+@NamedQueries({ @NamedQuery(name = "Jogador.buscaJogador", query = "select x from Jogador x order by x.nome") })
 public class Jogador implements Comparable<Jogador> {
 
 	@Id

@@ -20,6 +20,18 @@ public class Pontuacao implements Comparable<Pontuacao> {
 
 	private int assistencias; //
 
+	public Double getNotaSorteio() {
+		Double notaSorteio;
+
+		if (this.jogos < 40) {
+			notaSorteio = (this.jogador.getNota() * this.jogador.getNotaPeso() + this.pontos)
+					/ (this.jogador.getNotaPeso() + this.jogos);
+		} else {
+			notaSorteio = this.pontos / this.jogos;
+		}
+		return notaSorteio;
+	}
+
 	public Jogador getJogador() {
 		return jogador;
 	}

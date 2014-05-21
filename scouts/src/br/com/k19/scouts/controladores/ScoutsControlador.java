@@ -28,7 +28,7 @@ public class ScoutsControlador {
 
 		this.times = this.scoutsServico.sorteia(ids);
 
-		return "pm:timesSorteados";
+		return "/timesSorteados";
 	}
 
 	public List<String> getSelecionados() {

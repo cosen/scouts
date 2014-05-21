@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Prepara Remove Jogo -->
+	<pm:page title="Scouts" swatch="a" id="preparaRemoveJogo">
+		<pm:header title="#{timeControlador.time}" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+			<p:button value="Jogos" outcome="/listaDeJogos" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<h:outputText value="Você realmente quer remover este Jogo?" />
+				<p:commandButton value="Não" action="/listaDeJogos" />
+				<p:commandButton value="SIM" action="#{jogoControlador.remove}">
+					<f:param name="id" value="#{jogoControlador.jogo.id}" />
+				</p:commandButton>
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

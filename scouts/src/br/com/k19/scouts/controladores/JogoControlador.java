@@ -40,15 +40,19 @@ public class JogoControlador {
 		this.jogoRepositorio.remove(this.jogo.getId());
 		this.jogo = null;
 		this.jogos = null;
-		return "pm:listaDeJogos";
+		return "/listaDeJogos";
 	}
 
 	public String novoJogo() {
-		this.jogoRepositorio.salva(this.time1, this.time2);
+		this.jogo = this.jogoRepositorio.salva(this.time1, this.time2);
+
+		this.carregaDadosDoJogo();
+
 		this.jogos = null;
 		this.time1 = null;
 		this.time2 = null;
-		return "pm:listaDeJogos";
+
+		return "/jogoDetalhes";
 	}
 
 	public String detalhes() {
@@ -58,6 +62,13 @@ public class JogoControlador {
 
 		this.jogo = this.jogoRepositorio.buscaPorId(id);
 
+		this.carregaDadosDoJogo();
+
+		this.jogos = null;
+		return "/jogoDetalhes";
+	}
+
+	private void carregaDadosDoJogo() {
 		this.gols = new String[3];
 		for (int i = 0; i < this.jogo.getGols().size(); i++) {
 			Gol gol = this.jogo.getGols().get(i);
@@ -81,9 +92,6 @@ public class JogoControlador {
 		this.jogadores = new ArrayList<Jogador>();
 		this.jogadores.addAll(this.jogo.getTime1().getJogadores());
 		this.jogadores.addAll(this.jogo.getTime2().getJogadores());
-
-		this.jogos = null;
-		return "pm:jogoDetalhes";
 	}
 
 	public String salva() {
@@ -109,7 +117,7 @@ public class JogoControlador {
 		this.gols = null;
 		this.assistencias = null;
 
-		return "pm:listaDeJogos";
+		return "/listaDeJogos";
 	}
 
 	public void setJogos(List<Jogo> jogos) {

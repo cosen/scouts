@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Novo Jogo -->
+	<pm:page title="Scouts" swatch="a" id="novoJogo">
+		<pm:header title="Novo Jogo" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%"/>
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<pm:field>
+					<p:outputLabel value="Time1:" />
+					<h:selectOneMenu value="#{jogoControlador.time1}">
+						<f:selectItems value="#{timeControlador.timesRecentes}" var="time"
+							itemLabel="#{time}" itemValue="#{time.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+
+				<pm:field>
+					<p:outputLabel value="Time2:" />
+					<h:selectOneMenu value="#{jogoControlador.time2}">
+						<f:selectItems value="#{timeControlador.timesRecentes}" var="time"
+							itemLabel="#{time}" itemValue="#{time.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+
+				<p:commandButton value="Salvar" action="#{jogoControlador.novoJogo}" />
+			</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>
