@@ -6,7 +6,9 @@
 
 	<persistence-unit name="K19-Pelada-Scouts" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>jdbc/K19-Pelada-Scouts</jta-data-source>
+<!-- 		<jta-data-source>jdbc/K19-Pelada-Scouts</jta-data-source> -->
+		<jta-data-source>jdbc/K19-Pelada-Scouts-Hugo-Mu</jta-data-source>
+<!-- 		<jta-data-source>jdbc/K19-Pelada-Scouts-Ameixa</jta-data-source> -->
 		
 		<properties>
 			<property name="hibernate.show_sql" value="false" />
