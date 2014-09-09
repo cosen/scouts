@@ -1,5 +1,6 @@
 package br.com.k19.scouts.repositorios;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import br.com.k19.scouts.entidades.Jogador;
-import br.com.k19.scouts.entidades.Jogo;
 import br.com.k19.scouts.entidades.Time;
 
 
@@ -48,5 +48,22 @@ public class TimeRepositorio {
 		TypedQuery<Time> query = this.manager.createNamedQuery("Time.buscaTimesCriadosHoje", Time.class);
 		query.setParameter("data", Calendar.getInstance(), TemporalType.DATE);
 		return query.getResultList().size();
+	}
+
+	public void atualiza(Time time) {
+		List<Jogador> jogadores = time.getJogadores();
+		List<Long> jogadoresID = new ArrayList<Long>();
+		
+		for (Jogador jogador : jogadores) {
+			jogadoresID.add(jogador.getId());
+		}
+		
+		time.getJogadores().clear();
+		
+		for (Long id : jogadoresID) {
+			time.getJogadores().add(this.manager.find(Jogador.class, id));
+		}
+		
+		this.manager.merge(time);
 	}
 }

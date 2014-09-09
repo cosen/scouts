@@ -13,15 +13,55 @@
 	<!-- Time Detalhes -->
 	<pm:page title="Scouts" swatch="a" id="timeDetalhes">
 		<pm:header title="#{timeControlador.time}" fixed="true">
-			<p:button value="Home" outcome="/index" style="width: 20%"/>
-			<p:button value="Times" outcome="/listaDeTimes"  style="width: 20%"/>
+			<p:button value="Home" outcome="/index" style="width: 20%" />
+			<p:button value="Times" outcome="/listaDeTimes" style="width: 20%" />
 		</pm:header>
 
 		<pm:content>
 			<h:form>
-				<p:dataList value="#{timeControlador.time.jogadores}" var="jogador">
-					<h:outputText value="#{jogador.nome}" />
-				</p:dataList>
+				<pm:field>
+					<h:selectOneMenu value="#{timeControlador.jogadoresID[0]}">
+						<f:selectItem itemValue="-1" itemLabel="Vazio" />
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+				
+				<pm:field>
+					<h:selectOneMenu value="#{timeControlador.jogadoresID[1]}">
+						<f:selectItem itemValue="-1" itemLabel="Vazio" />
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+				
+				<pm:field>
+					<h:selectOneMenu value="#{timeControlador.jogadoresID[2]}">
+						<f:selectItem itemValue="-1" itemLabel="Vazio" />
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+				
+				<pm:field>
+					<h:selectOneMenu value="#{timeControlador.jogadoresID[3]}">
+						<f:selectItem itemValue="-1" itemLabel="Vazio" />
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+				
+				<pm:field>
+					<h:selectOneMenu value="#{timeControlador.jogadoresID[4]}">
+						<f:selectItem itemValue="-1" itemLabel="Vazio" />
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+			
+				<p:commandButton value="Salvar" action="#{timeControlador.atualiza}">
+					<f:param name="id" value="#{timeControlador.time.id}" />
+				</p:commandButton>
 			</h:form>
 		</pm:content>
 	</pm:page>
