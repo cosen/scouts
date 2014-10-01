@@ -1,7 +1,9 @@
 package br.com.k19.scouts.repositorios;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -92,7 +94,7 @@ public class JogoRepositorio {
 		Jogo jogo = new Jogo();
 		jogo.setTime1(time1);
 		jogo.setTime2(time2);
-		jogo.setData(Calendar.getInstance());
+		jogo.setData(new GregorianCalendar(TimeZone.getTimeZone("GMT-3:00")));
 
 		this.manager.persist(jogo);
 		
@@ -119,7 +121,8 @@ public class JogoRepositorio {
 			Gol gol = new Gol();
 			this.manager.persist(gol);
 
-			gol.setData(Calendar.getInstance());
+			gol.setData(new GregorianCalendar(
+					TimeZone.getTimeZone("GMT-3:00")));
 
 			gol.setJogo(jogo);
 			jogo.getGols().add(gol);

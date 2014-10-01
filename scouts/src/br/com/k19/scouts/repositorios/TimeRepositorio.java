@@ -2,7 +2,9 @@ package br.com.k19.scouts.repositorios;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -46,7 +48,8 @@ public class TimeRepositorio {
 
 	public int contaTimesCriadosHoje() {
 		TypedQuery<Time> query = this.manager.createNamedQuery("Time.buscaTimesCriadosHoje", Time.class);
-		query.setParameter("data", Calendar.getInstance(), TemporalType.DATE);
+		query.setParameter("data", new GregorianCalendar(
+				TimeZone.getTimeZone("GMT-3:00")), TemporalType.DATE);
 		return query.getResultList().size();
 	}
 

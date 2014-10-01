@@ -1,7 +1,9 @@
 package br.com.k19.scouts.controladores;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -22,8 +24,10 @@ public class ClassificacaoControlador {
 	private ScoutsServico scoutsServico;
 	
 	public ClassificacaoControlador() {
-		this.inicio = Calendar.getInstance();
-		this.fim = Calendar.getInstance();
+		this.inicio = new GregorianCalendar(
+				TimeZone.getTimeZone("GMT-3:00"));
+		this.fim = new GregorianCalendar(
+				TimeZone.getTimeZone("GMT-3:00"));
 		
 		this.inicio.set(Calendar.DAY_OF_MONTH, 1);
 	}

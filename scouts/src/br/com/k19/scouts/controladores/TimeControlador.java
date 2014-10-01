@@ -2,8 +2,10 @@ package br.com.k19.scouts.controladores;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -83,9 +85,11 @@ public class TimeControlador {
 
 	public List<Time> getTimesRecentes() {
 		if (this.timesRecentes == null) {
-			Calendar inicio = Calendar.getInstance();
+			Calendar inicio = new GregorianCalendar(
+					TimeZone.getTimeZone("GMT-3:00"));
 			inicio.add(Calendar.DAY_OF_MONTH, -6);
-			Calendar fim = Calendar.getInstance();
+			Calendar fim = new GregorianCalendar(
+					TimeZone.getTimeZone("GMT-3:00"));
 
 			this.timesRecentes = this.timeRepositorio.buscaTimesPorData(inicio,
 					fim);

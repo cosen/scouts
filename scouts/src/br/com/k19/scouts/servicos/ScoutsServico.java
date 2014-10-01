@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -126,7 +128,8 @@ public class ScoutsServico {
 			Time time = new Time();
 			char letra = (char) ('A' + i + offset);
 			time.setSigla("" + letra);
-			time.setData(Calendar.getInstance());
+			time.setData(new GregorianCalendar(
+					TimeZone.getTimeZone("GMT-3:00")));
 			times.add(time);
 		}
 
@@ -216,7 +219,8 @@ public class ScoutsServico {
 			message.setSubject("Classificação " + sdf.format(date));
 			
 			
-			Calendar inicio = Calendar.getInstance();
+			Calendar inicio = new GregorianCalendar(
+					TimeZone.getTimeZone("GMT-3:00"));
 			inicio.set(Calendar.DAY_OF_MONTH, 1);
 			
 			Calendar fim = Calendar.getInstance();
