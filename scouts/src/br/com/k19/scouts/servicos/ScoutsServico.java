@@ -131,6 +131,9 @@ public class ScoutsServico {
 			time.setData(new GregorianCalendar(TimeZone.getTimeZone("GMT-3:00")));
 			times.add(time);
 		}
+		
+		// invertendo
+		Collections.reverse(times);
 
 		// pontuação dos jogadores que estarão no sorteio
 		Calendar inicio = Calendar.getInstance();
@@ -169,6 +172,7 @@ public class ScoutsServico {
 		}
 
 		/* POTE 0 */
+		Collections.shuffle(potes.get(0));
 		for (int i = 0; i < numeroDeTimes; i++) {
 			if (potes.get(0).size() == 0) {
 				break;
