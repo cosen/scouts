@@ -43,7 +43,7 @@ public class ScoutsServico {
 
 	@EJB
 	private JogoRepositorio jogoRepositorio;
-	
+
 	public List<Pontuacao> geraClassificacao(Calendar inicio, Calendar fim) {
 		Map<Jogador, Pontuacao> mapa = new HashMap<Jogador, Pontuacao>();
 		List<Jogador> jogadores = this.jogadorRepositorio.buscaJogadores();
@@ -128,8 +128,7 @@ public class ScoutsServico {
 			Time time = new Time();
 			char letra = (char) ('A' + i + offset);
 			time.setSigla("" + letra);
-			time.setData(new GregorianCalendar(
-					TimeZone.getTimeZone("GMT-3:00")));
+			time.setData(new GregorianCalendar(TimeZone.getTimeZone("GMT-3:00")));
 			times.add(time);
 		}
 
@@ -146,14 +145,13 @@ public class ScoutsServico {
 				Jogador jogador = pontuacao.getJogador();
 				jogadores.add(jogador);
 
-				jogador.setNotaSorteio(pontuacao.getNotaSorteio());	
+				jogador.setNotaSorteio(pontuacao.getNotaSorteio());
 			}
 		}
 
 		Collections.sort(jogadores);
 		Collections.reverse(jogadores);
 
-		
 		// criando os potes
 		List<List<Jogador>> potes = new ArrayList<List<Jogador>>();
 		for (int i = 0; i < 5; i++) {
@@ -170,17 +168,129 @@ public class ScoutsServico {
 			}
 		}
 
-		// espalhando os jogadores
+		/* POTE 0 */
 		for (int i = 0; i < numeroDeTimes; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (potes.get(j).size() == 0) {
-					break;
-				}
-				Collections.shuffle(potes.get(j));
-				Jogador x = potes.get(j).remove(0);
-				times.get(i).getJogadores().add(x);
+			if (potes.get(0).size() == 0) {
+				break;
 			}
+
+			Jogador x = potes.get(0).remove(0);
+			times.get(i).getJogadores().add(x);
 		}
+		
+		/* POTE 1 */
+		for (int i = 0; i < numeroDeTimes; i++) {
+			if (potes.get(1).size() == 0) {
+				break;
+			}
+			
+			int[] contadorDeJogos = new int[potes.get(1).size()];
+			for (int j = 0; j < contadorDeJogos.length; j++) {
+				Jogador jogador0 = potes.get(1).get(j);
+				Jogador jogador1 = times.get(i).getJogadores().get(0);
+				contadorDeJogos[j] = this.timeRepositorio.contaTimesPorDupla(jogador0, jogador1);
+			}
+			
+			int indiceMenor = 0;
+			for (int j = 1; j < contadorDeJogos.length; j++) {
+				if(contadorDeJogos[indiceMenor] > contadorDeJogos[j]) {
+					indiceMenor = j;
+				}
+			}
+			
+			Jogador x = potes.get(1).remove(indiceMenor);
+			times.get(i).getJogadores().add(x);
+		}
+		
+		/* POTE 2 */
+		for (int i = 0; i < numeroDeTimes; i++) {
+			if (potes.get(2).size() == 0) {
+				break;
+			}
+			
+			int[] contadorDeJogos = new int[potes.get(2).size()];
+			for (int j = 0; j < contadorDeJogos.length; j++) {
+				Jogador jogador0 = potes.get(2).get(j);
+				Jogador jogador1 = times.get(i).getJogadores().get(0);
+				Jogador jogador2 = times.get(i).getJogadores().get(1);
+				contadorDeJogos[j] = this.timeRepositorio.contaTimesPorDupla(jogador0, jogador1, jogador2);
+			}
+			
+			int indiceMenor = 0;
+			for (int j = 1; j < contadorDeJogos.length; j++) {
+				if(contadorDeJogos[indiceMenor] > contadorDeJogos[j]) {
+					indiceMenor = j;
+				}
+			}
+			
+			Jogador x = potes.get(2).remove(indiceMenor);
+			times.get(i).getJogadores().add(x);
+		}
+		
+		/* POTE 3 */
+		for (int i = 0; i < numeroDeTimes; i++) {
+			if (potes.get(3).size() == 0) {
+				break;
+			}
+			
+			int[] contadorDeJogos = new int[potes.get(3).size()];
+			for (int j = 0; j < contadorDeJogos.length; j++) {
+				Jogador jogador0 = potes.get(3).get(j);
+				Jogador jogador1 = times.get(i).getJogadores().get(0);
+				Jogador jogador2 = times.get(i).getJogadores().get(1);
+				Jogador jogador3 = times.get(i).getJogadores().get(2);
+				contadorDeJogos[j] = this.timeRepositorio.contaTimesPorDupla(jogador0, jogador1, jogador2, jogador3);
+			}
+			
+			int indiceMenor = 0;
+			for (int j = 1; j < contadorDeJogos.length; j++) {
+				if(contadorDeJogos[indiceMenor] > contadorDeJogos[j]) {
+					indiceMenor = j;
+				}
+			}
+			
+			Jogador x = potes.get(3).remove(indiceMenor);
+			times.get(i).getJogadores().add(x);
+		}
+		
+		/* POTE 4 */
+		for (int i = 0; i < numeroDeTimes; i++) {
+			if (potes.get(4).size() == 0) {
+				break;
+			}
+			
+			int[] contadorDeJogos = new int[potes.get(4).size()];
+			for (int j = 0; j < contadorDeJogos.length; j++) {
+				Jogador jogador0 = potes.get(4).get(j);
+				Jogador jogador1 = times.get(i).getJogadores().get(0);
+				Jogador jogador2 = times.get(i).getJogadores().get(1);
+				Jogador jogador3 = times.get(i).getJogadores().get(2);
+				Jogador jogador4 = times.get(i).getJogadores().get(3);
+				contadorDeJogos[j] = this.timeRepositorio.contaTimesPorDupla(jogador0, jogador1, jogador2, jogador3, jogador4);
+			}
+			
+			int indiceMenor = 0;
+			for (int j = 1; j < contadorDeJogos.length; j++) {
+				if(contadorDeJogos[indiceMenor] > contadorDeJogos[j]) {
+					indiceMenor = j;
+				}
+			}
+			
+			Jogador x = potes.get(4).remove(indiceMenor);
+			times.get(i).getJogadores().add(x);
+		}
+		
+		// espalhando os jogadores
+//		for (int i = 0; i < numeroDeTimes; i++) {
+//			for (int j = 0; j < 5; j++) {
+//				if (potes.get(j).size() == 0) {
+//					break;
+//				}
+//				Collections.shuffle(potes.get(j));
+//				Jogador x = potes.get(j).remove(0);
+//				times.get(i).getJogadores().add(x);
+//			}
+//		}
 
 		// salvando os times
 		for (Time x : times) {
@@ -189,45 +299,44 @@ public class ScoutsServico {
 
 		return times;
 	}
-	
-	public void enviaEmailClassificacao(){
+
+	public void enviaEmailClassificacao() {
 		final String username = "futsal.de.terca@gmail.com";
 		final String password = "carameloazul";
- 
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
- 
+
 		Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		  });
- 
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
+
 		try {
- 
+
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("futsal.de.terca@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("futsal-de-terca@googlegroups.com"));
-				//InternetAddress.parse("rcosen@gmail.com"));
+					InternetAddress.parse("futsal-de-terca@googlegroups.com"));
+			// InternetAddress.parse("rcosen@gmail.com"));
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			message.setSubject("Classificação " + sdf.format(date));
-			
-			
+
 			Calendar inicio = new GregorianCalendar(
 					TimeZone.getTimeZone("GMT-3:00"));
 			inicio.set(Calendar.DAY_OF_MONTH, 1);
-			
+
 			Calendar fim = Calendar.getInstance();
 			List<Pontuacao> classificacao = this.geraClassificacao(inicio, fim);
-			
+
 			StringBuilder sb = new StringBuilder();
-			
+
 			sb.append("<html>");
 			sb.append("<table>");
 			sb.append("<tr>");
@@ -240,10 +349,11 @@ public class ScoutsServico {
 			sb.append("<th>Gols</th>");
 			sb.append("<th>Assistências</th>");
 			sb.append("</tr>");
-			
+
 			boolean cor = true;
 			for (Pontuacao pontuacao : classificacao) {
-				sb.append("<tr style='background-color: "+ (cor ? "#CCCCCC" : "#FFFFFF" )+"'>");
+				sb.append("<tr style='background-color: "
+						+ (cor ? "#CCCCCC" : "#FFFFFF") + "'>");
 				sb.append("<td>" + pontuacao.getJogador().getNome() + "</td>");
 				sb.append("<td>" + pontuacao.getPontos() + "</td>");
 				sb.append("<td>" + pontuacao.getJogos() + "</td>");
@@ -253,20 +363,19 @@ public class ScoutsServico {
 				sb.append("<td>" + pontuacao.getGols() + "</td>");
 				sb.append("<td>" + pontuacao.getAssistencias() + "</td>");
 				sb.append("</tr>");
-				
+
 				cor = !cor;
 			}
 			sb.append("</table>");
 			sb.append("</html>");
-			
+
 			message.setContent(sb.toString(), "text/html; charset=utf-8");
- 
+
 			Transport.send(message);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
 
 	private int calculaQuantidadeDeTimes(int n) {
 		return (int) Math.ceil(n / 5.0);

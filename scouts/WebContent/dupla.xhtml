@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<h:head>
+	<meta name="viewport" content="width=device-width,user-scalable=yes"></meta>
+</h:head>
+<h:body>
+	<!-- Time Detalhes -->
+	<pm:page title="Scouts" swatch="a" id="timeDetalhes">
+		<pm:header title="Dupla" fixed="true">
+			<p:button value="Home" outcome="/index" style="width: 20%" />
+		</pm:header>
+
+		<pm:content>
+			<h:form>
+				<pm:field>
+					<h:selectOneMenu value="#{duplaControlador.jogador1.id}">
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+				
+				<pm:field>
+					<h:selectOneMenu value="#{duplaControlador.jogador2.id}">
+						<f:selectItems value="#{jogadorControlador.jogadores}" var="jogador"
+							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
+					</h:selectOneMenu>
+				</pm:field>
+			
+				<p:commandButton value="Ok" action="#{duplaControlador.consultaScouts}" update="@all"/>
+			</h:form>
+			
+			<h:outputText value="Times: #{duplaControlador.jogos}"/>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

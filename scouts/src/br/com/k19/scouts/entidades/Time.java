@@ -19,7 +19,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 		@NamedQuery(name = "Time.buscaTime", query = "select x from Time x order by x.id desc"),
 		@NamedQuery(name = "Time.buscaPorData", query = "select x from Time x where x.data >= :inicio and x.data <= :fim"),
-		@NamedQuery(name = "Time.buscaTimesCriadosHoje", query = "select x from Time x where x.data = :data")})
+		@NamedQuery(name = "Time.buscaTimesCriadosHoje", query = "select x from Time x where x.data = :data"),
+		@NamedQuery(name = "Time.contaTimesPorDupla", query = "select count(x) from Time x where :jogador1 member of x.jogadores and :jogador2 member of x.jogadores")})
 public class Time {
 
 	@Id
