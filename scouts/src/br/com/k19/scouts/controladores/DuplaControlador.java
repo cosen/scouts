@@ -20,8 +20,6 @@ public class DuplaControlador {
 
 	public String consultaScouts() {
 		this.jogos = this.timeRepositorio.contaTimesPorDupla(this.jogador1, this.jogador2);
-		System.out.println("oioio");
-		System.out.println(jogos);
 		return null;
 	}
 
