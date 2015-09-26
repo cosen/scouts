@@ -14,10 +14,19 @@
 
 .tabela  table {
 	width: 100%;
+	table-layout: auto;
 }
 
 .tabela  table td {
-	padding: 1%
+	padding: 1%;
+}
+
+.padding-right {
+	padding-right: 20px!important;
+}
+
+.tabela .ui-sortable-column-icon {
+	margin-right: -10px;
 }
 </style>
 </h:head>
@@ -64,6 +73,11 @@
 					</p:column>
 					<p:column headerText="A">
 						<h:outputText value="#{pontuacao.assistencias}" />
+					</p:column>
+					<p:column headerText="M"  sortBy="#{pontuacao.media}" styleClass="padding-right">
+						<h:outputText value="#{pontuacao.media}">
+							<f:convertNumber maxFractionDigits="2" />
+						</h:outputText>
 					</p:column>
 					<p:column headerText="NS">
 						<h:outputText value="#{pontuacao.jogador.notaSorteio}">

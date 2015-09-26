@@ -4,21 +4,29 @@ import br.com.k19.scouts.entidades.Jogador;
 
 public class Pontuacao implements Comparable<Pontuacao> {
 
-	private Jogador jogador; //
+	private Jogador jogador;
 
-	private double pontos; //
+	private double pontos;
 
-	private int jogos; //
+	private int jogos;
 
-	private int vitorias; //
+	private int vitorias;
 
-	private int empates; //
+	private int empates;
 
-	private int derrotas; //
+	private int derrotas;
 
-	private int gols; //
+	private int gols;
 
-	private int assistencias; //
+	private int assistencias;
+
+	public Double getMedia() {
+		if (this.jogos > 0) {
+			return this.pontos / this.jogos;
+		} else {
+			return 0.0;
+		}
+	}
 
 	public Double getNotaSorteio() {
 		Double notaSorteio;
