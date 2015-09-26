@@ -16,12 +16,12 @@
 		<pm:header title="Scouts" fixed="true"></pm:header>
 
 		<pm:content>
-			<p:button value="Novo Jogo" outcome="/novoJogo" />
+			<p:button value="Novo Jogo" outcome="/novoJogo" rendered="#{sessionScope.logado}" />
 			<p:button value="Jogos" outcome="/listaDeJogos" />
 			<p:button value="Classificação" outcome="/classificacao" />
-			<p:button value="Sorteio" outcome="/sortearTimes" />
+			<p:button value="Sorteio" outcome="/sortearTimes" rendered="#{sessionScope.logado}"/>
 			<p:button value="Times" outcome="/listaDeTimes" />
-			<p:button value="Novo Jogador" outcome="/novoJogador" />
+			<p:button value="Novo Jogador" outcome="/novoJogador" rendered="#{sessionScope.logado}"/>
 			<p:button value="Dupla" outcome="/dupla" />
 		</pm:content>
 	</pm:page>

@@ -40,7 +40,7 @@
 		<pm:content>
 			<h:form>
  				<p:commandButton value="Enviar Classificacao"
- 					action="#{emailControlador.enviaEmailClassificacao}" />
+ 					action="#{emailControlador.enviaEmailClassificacao}" rendered="#{sessionScope.logado}"/>
 
 				<p:dataTable styleClass="tabela"
 					value="#{classificacaoControlador.classificacao}"

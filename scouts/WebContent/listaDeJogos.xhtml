@@ -13,7 +13,7 @@
 	<pm:page title="Scouts" swatch="a" id="listaDeJogos">
 		<pm:header title="Jogos" fixed="true">
 			<p:button value="Home" outcome="/index" style="width: 20%"/>
-			<p:button value="Novo" outcome="/novoJogo" style="width: 20%"/>
+			<p:button value="Novo" outcome="/novoJogo" style="width: 20%" rendered="#{sessionScope.logado}"/>
 		</pm:header>
 
 		<pm:content>

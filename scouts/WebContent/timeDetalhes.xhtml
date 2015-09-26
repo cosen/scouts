@@ -14,7 +14,6 @@
 	<pm:page title="Scouts" swatch="a" id="timeDetalhes">
 		<pm:header title="#{timeControlador.time}" fixed="true">
 			<p:button value="Home" outcome="/index" style="width: 20%" />
-			<p:button value="Times" outcome="/listaDeTimes" style="width: 20%" />
 		</pm:header>
 
 		<pm:content>
@@ -59,7 +58,7 @@
 					</h:selectOneMenu>
 				</pm:field>
 			
-				<p:commandButton value="Salvar" action="#{timeControlador.atualiza}">
+				<p:commandButton value="Salvar" action="#{timeControlador.atualiza}" rendered="#{sessionScope.logado}">
 					<f:param name="id" value="#{timeControlador.time.id}" />
 				</p:commandButton>
 			</h:form>

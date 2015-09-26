@@ -14,11 +14,12 @@
 	<pm:page title="Scouts" swatch="a" id="jogoDetalhes">
 		<pm:header title="Jogo" fixed="true">
 			<p:button value="Home" outcome="/index" style="width: 20%" />
-			<p:button value="Novo" outcome="/novoJogo" style="width: 20%" />
+			<p:button value="Novo" outcome="/novoJogo" style="width: 20%" rendered="#{sessionScope.logado}"/>
 		</pm:header>
 
 		<pm:content>
 			<h:form>
+				<ui:remove>
 				<h4>CRONÔMETRO</h4>
 				<button type="button">Start</button>
 				<button onclick="zera();" type="button">Reset</button>
@@ -26,18 +27,19 @@
 				<audio id="audio" preload="auto">
 					<source src="rocky.mp3" type="audio/mp3" />
 				</audio>
-
+				</ui:remove>
+				
 				<h4>PLACAR</h4>
 
 				<h:outputLabel value="#{jogoControlador.jogo}" />
 
-				<p:commandButton value="Salvar" action="#{jogoControlador.salva}" />
+				<p:commandButton value="Salvar" action="#{jogoControlador.salva}" rendered="#{sessionScope.logado}"/>
 
-				<p:commandButton value="Remover" action="/preparaRemoveJogo" />
+				<p:commandButton value="Remover" action="/preparaRemoveJogo" rendered="#{sessionScope.logado}"/>
 
 				<h4>GOLS</h4>
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.gols[0]}">
+					<h:selectOneMenu value="#{jogoControlador.gols[0]}" disabled="#{!sessionScope.logado}">
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
@@ -49,7 +51,7 @@
 				</pm:field>
 
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.gols[1]}">
+					<h:selectOneMenu value="#{jogoControlador.gols[1]}" disabled="#{!sessionScope.logado}">
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
@@ -61,7 +63,7 @@
 				</pm:field>
 
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.gols[2]}">
+					<h:selectOneMenu value="#{jogoControlador.gols[2]}" disabled="#{!sessionScope.logado}">
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
@@ -74,7 +76,7 @@
 
 				<h4>ASSISTÊNCIAS</h4>
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.assistencias[0]}">
+					<h:selectOneMenu value="#{jogoControlador.assistencias[0]}" disabled="#{!sessionScope.logado}">
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
@@ -82,7 +84,7 @@
 				</pm:field>
 
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.assistencias[1]}">
+					<h:selectOneMenu value="#{jogoControlador.assistencias[1]}" disabled="#{!sessionScope.logado}">
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />
@@ -90,7 +92,7 @@
 				</pm:field>
 
 				<pm:field>
-					<h:selectOneMenu value="#{jogoControlador.assistencias[2]}">
+					<h:selectOneMenu value="#{jogoControlador.assistencias[2]}" disabled="#{!sessionScope.logado}" >
 						<f:selectItem noSelectionOption="true" itemLabel="" />
 						<f:selectItems value="#{jogoControlador.jogadores}" var="jogador"
 							itemLabel="#{jogador.nome}" itemValue="#{jogador.id}" />

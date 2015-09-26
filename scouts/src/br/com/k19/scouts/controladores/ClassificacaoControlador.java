@@ -7,11 +7,13 @@ import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 import br.com.k19.scouts.relatorios.Pontuacao;
 import br.com.k19.scouts.servicos.ScoutsServico;
 
 @ManagedBean
+@SessionScoped
 public class ClassificacaoControlador {
 
 	private Calendar inicio;
@@ -30,7 +32,7 @@ public class ClassificacaoControlador {
 		this.inicio = new GregorianCalendar(this.inicio.get(Calendar.YEAR),
 				this.inicio.get(Calendar.MONTH), 1);
 	}
-
+	
 	public String gera() {
 		this.classificacao = this.scoutsServico.geraClassificacao(this.inicio,
 				this.fim);
