@@ -334,8 +334,11 @@ public class ScoutsServico {
 
 			Calendar inicio = new GregorianCalendar(
 					TimeZone.getTimeZone("GMT-3:00"));
-			inicio.set(Calendar.DAY_OF_MONTH, 1);
-
+			
+			
+			inicio = new GregorianCalendar(inicio.get(Calendar.YEAR),
+					inicio.get(Calendar.MONTH), 1);
+			
 			Calendar fim = Calendar.getInstance();
 			List<Pontuacao> classificacao = this.geraClassificacao(inicio, fim);
 
